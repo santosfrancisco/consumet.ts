@@ -99,10 +99,14 @@ class MangaDex extends MangaParser {
       if (res.data.result == 'ok') {
         const results: ISearch<IMangaResult> = {
           currentPage: page,
+          totalPages: res.data.total,
           results: [],
         };
 
         for (const manga of res.data.data) {
+          const findCoverArt = manga.relationships.find((rel: any) => rel.type === 'cover_art');
+          const coverArt = await this.fetchCoverImage(findCoverArt?.id);
+
           results.results.push({
             id: manga.id,
             title: Object.values(manga.attributes.title)[0] as string,
@@ -113,6 +117,7 @@ class MangaDex extends MangaParser {
             contentRating: manga.attributes.contentRating,
             lastVolume: manga.attributes.lastVolume,
             lastChapter: manga.attributes.lastChapter,
+            image: `${this.baseUrl}/covers/${manga.id}/${coverArt}`,
           });
         }
 
