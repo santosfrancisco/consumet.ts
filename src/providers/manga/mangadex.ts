@@ -31,7 +31,7 @@ class MangaDex extends MangaParser {
         chapters: [],
       };
 
-      const allChapters = await this.fetchAllChapters(mangaId, 0);
+      const allChapters = await this.fetchAllChapters(mangaId, 0, languages);
       for (const chapter of allChapters) {
         mangaInfo.chapters?.push({
           id: chapter.id,

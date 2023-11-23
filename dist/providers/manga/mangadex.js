@@ -30,7 +30,7 @@ class MangaDex extends models_1.MangaParser {
                     releaseDate: data.data.attributes.year,
                     chapters: [],
                 };
-                const allChapters = await this.fetchAllChapters(mangaId, 0);
+                const allChapters = await this.fetchAllChapters(mangaId, 0, languages);
                 for (const chapter of allChapters) {
                     (_a = mangaInfo.chapters) === null || _a === void 0 ? void 0 : _a.push({
                         id: chapter.id,
