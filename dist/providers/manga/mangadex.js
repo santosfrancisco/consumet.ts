@@ -11,7 +11,7 @@ class MangaDex extends models_1.MangaParser {
         this.logo = 'https://pbs.twimg.com/profile_images/1391016345714757632/xbt_jW78_400x400.jpg';
         this.classPath = 'MANGA.MangaDex';
         this.apiUrl = 'https://api.mangadex.org';
-        this.fetchMangaInfo = async (mangaId) => {
+        this.fetchMangaInfo = async (mangaId, languages) => {
             var _a;
             try {
                 const { data } = await this.client.get(`${this.apiUrl}/manga/${mangaId}`);
@@ -115,13 +115,16 @@ class MangaDex extends models_1.MangaParser {
                 throw new Error(err.message);
             }
         };
-        this.fetchAllChapters = async (mangaId, offset, res) => {
+        this.fetchAllChapters = async (mangaId, offset, languages, res) => {
             var _a, _b;
             if (((_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.offset) + 96 >= ((_b = res === null || res === void 0 ? void 0 : res.data) === null || _b === void 0 ? void 0 : _b.total)) {
                 return [];
             }
-            const response = await this.client.get(`${this.apiUrl}/manga/${mangaId}/feed?offset=${offset}&limit=96&order[volume]=desc&order[chapter]=desc&translatedLanguage[]=en`);
-            return [...response.data.data, ...(await this.fetchAllChapters(mangaId, offset + 96, response))];
+            const response = await this.client.get(`${this.apiUrl}/manga/${mangaId}/feed?offset=${offset}&limit=96&order[volume]=desc&order[chapter]=desc&translatedLanguage[]=${(languages === null || languages === void 0 ? void 0 : languages.join(',')) || 'en'}`);
+            return [
+                ...response.data.data,
+                ...(await this.fetchAllChapters(mangaId, offset + 96, languages, response)),
+            ];
         };
         this.fetchCoverImage = async (coverId) => {
             const { data } = await this.client.get(`${this.apiUrl}/cover/${coverId}`);

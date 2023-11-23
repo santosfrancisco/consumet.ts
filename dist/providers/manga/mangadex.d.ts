@@ -5,7 +5,7 @@ declare class MangaDex extends MangaParser {
     protected logo: string;
     protected classPath: string;
     private readonly apiUrl;
-    fetchMangaInfo: (mangaId: string) => Promise<IMangaInfo>;
+    fetchMangaInfo: (mangaId: string, languages?: string[]) => Promise<IMangaInfo>;
     /**
      * @currently only supports english
      */

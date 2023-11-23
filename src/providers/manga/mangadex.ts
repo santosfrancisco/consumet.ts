@@ -12,7 +12,7 @@ class MangaDex extends MangaParser {
 
   private readonly apiUrl = 'https://api.mangadex.org';
 
-  override fetchMangaInfo = async (mangaId: string): Promise<IMangaInfo> => {
+  override fetchMangaInfo = async (mangaId: string, languages?: string[]): Promise<IMangaInfo> => {
     try {
       const { data } = await this.client.get(`${this.apiUrl}/manga/${mangaId}`);
       const mangaInfo: IMangaInfo = {
@@ -132,6 +132,7 @@ class MangaDex extends MangaParser {
   private fetchAllChapters = async (
     mangaId: string,
     offset: number,
+    languages?: string[],
     res?: AxiosResponse<any, any>
   ): Promise<any[]> => {
     if (res?.data?.offset + 96 >= res?.data?.total) {
@@ -139,10 +140,17 @@ class MangaDex extends MangaParser {
     }
 
     const response = await this.client.get(
-      `${this.apiUrl}/manga/${mangaId}/feed?offset=${offset}&limit=96&order[volume]=desc&order[chapter]=desc&translatedLanguage[]=en`
+      `${
+        this.apiUrl
+      }/manga/${mangaId}/feed?offset=${offset}&limit=96&order[volume]=desc&order[chapter]=desc&translatedLanguage[]=${
+        languages?.join(',') || 'en'
+      }`
     );
 
-    return [...response.data.data, ...(await this.fetchAllChapters(mangaId, offset + 96, response))];
+    return [
+      ...response.data.data,
+      ...(await this.fetchAllChapters(mangaId, offset + 96, languages, response)),
+    ];
   };
 
   private fetchCoverImage = async (coverId: string): Promise<string> => {
