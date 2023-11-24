@@ -87,7 +87,7 @@ class MangaDex extends models_1.MangaParser {
                 if (res.data.result == 'ok') {
                     const results = {
                         currentPage: page,
-                        totalPages: res.data.total,
+                        totalPages: Math.ceil(res.data.total / limit),
                         results: [],
                     };
                     for (const manga of res.data.data) {
@@ -103,7 +103,7 @@ class MangaDex extends models_1.MangaParser {
                             contentRating: manga.attributes.contentRating,
                             lastVolume: manga.attributes.lastVolume,
                             lastChapter: manga.attributes.lastChapter,
-                            image: coverArt ? `${this.baseUrl}/covers/${manga.id}/${coverArt}.512.jpg` : '',
+                            image: coverArt ? `${this.baseUrl}/covers/${manga.id}/${coverArt}.256.jpg` : '',
                         });
                     }
                     return results;

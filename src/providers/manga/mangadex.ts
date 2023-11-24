@@ -99,7 +99,7 @@ class MangaDex extends MangaParser {
       if (res.data.result == 'ok') {
         const results: ISearch<IMangaResult> = {
           currentPage: page,
-          totalPages: res.data.total,
+          totalPages: Math.ceil(res.data.total / limit),
           results: [],
         };
 
@@ -118,7 +118,7 @@ class MangaDex extends MangaParser {
             contentRating: manga.attributes.contentRating,
             lastVolume: manga.attributes.lastVolume,
             lastChapter: manga.attributes.lastChapter,
-            image: coverArt ? `${this.baseUrl}/covers/${manga.id}/${coverArt}.512.jpg` : '',
+            image: coverArt ? `${this.baseUrl}/covers/${manga.id}/${coverArt}.256.jpg` : '',
           });
         }
 
