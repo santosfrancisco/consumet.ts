@@ -41,7 +41,7 @@ class MangaDex extends models_1.MangaParser {
                     });
                 }
                 const findCoverArt = data.data.relationships.find((rel) => rel.type === 'cover_art');
-                const coverArt = await this.fetchCoverImage(findCoverArt === null || findCoverArt === void 0 ? void 0 : findCoverArt.id);
+                const coverArt = (findCoverArt === null || findCoverArt === void 0 ? void 0 : findCoverArt.id) ? await this.fetchCoverImage(findCoverArt === null || findCoverArt === void 0 ? void 0 : findCoverArt.id) : null;
                 mangaInfo.image = coverArt ? `${this.baseUrl}/covers/${mangaInfo.id}/${coverArt}.512.jpg` : '';
                 return mangaInfo;
             }
