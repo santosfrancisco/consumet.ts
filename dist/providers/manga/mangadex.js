@@ -42,7 +42,7 @@ class MangaDex extends models_1.MangaParser {
                 }
                 const findCoverArt = data.data.relationships.find((rel) => rel.type === 'cover_art');
                 const coverArt = await this.fetchCoverImage(findCoverArt === null || findCoverArt === void 0 ? void 0 : findCoverArt.id);
-                mangaInfo.image = `${this.baseUrl}/covers/${mangaInfo.id}/${coverArt}`;
+                mangaInfo.image = `${this.baseUrl}/covers/${mangaInfo.id}/${coverArt}.512.jpg`;
                 return mangaInfo;
             }
             catch (err) {
@@ -103,7 +103,7 @@ class MangaDex extends models_1.MangaParser {
                             contentRating: manga.attributes.contentRating,
                             lastVolume: manga.attributes.lastVolume,
                             lastChapter: manga.attributes.lastChapter,
-                            image: coverArt ? `${this.baseUrl}/covers/${manga.id}/${coverArt}` : '',
+                            image: coverArt ? `${this.baseUrl}/covers/${manga.id}/${coverArt}.512.jpg` : '',
                         });
                     }
                     return results;
